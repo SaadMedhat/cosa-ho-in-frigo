@@ -1,6 +1,5 @@
 "use client";
 
-import { use } from "react";
 import { useRouter } from "next/navigation";
 import { motion } from "framer-motion";
 import { useMealDetail } from "@/lib/api/queries";
@@ -18,9 +17,9 @@ import { fadeInDown } from "@/lib/motion";
 export default function RecipeDetailPage({
   params,
 }: {
-  params: Promise<{ id: string }>;
+  params: { id: string };
 }) {
-  const { id } = use(params);
+  const { id } = params;
   const router = useRouter();
   const { data: meal, isLoading, isError } = useMealDetail(id);
   const { ingredients: userIngredients } = useIngredients();
