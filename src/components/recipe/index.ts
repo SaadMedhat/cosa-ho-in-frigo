@@ -1,4 +1,4 @@
-export { RecipeHero } from "./RecipeHero";
-export { IngredientCheckList } from "./IngredientCheckList";
-export { InstructionSteps } from "./InstructionSteps";
-export { RecipeDetailSkeleton } from "./RecipeDetailSkeleton";
+export { RecipeHero } from "./recipe-hero";
+export { IngredientCheckList } from "./ingredient-checklist";
+export { InstructionSteps } from "./instruction-steps";
+export { RecipeDetailSkeleton } from "./recipe-detail-skeleton";

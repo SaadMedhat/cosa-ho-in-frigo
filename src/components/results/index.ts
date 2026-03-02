@@ -1,3 +1,3 @@
-export { ItemCard, type CardItem, mealToCardItem, cocktailToCardItem } from "./ItemCard";
-export { ResultsList } from "./ResultsList";
-export { ResultsSkeleton } from "./ResultsSkeleton";
+export { ItemCard, type CardItem, mealToCardItem, cocktailToCardItem } from "./item-card";
+export { ResultsList } from "./results-list";
+export { ResultsSkeleton } from "./results-skeleton";

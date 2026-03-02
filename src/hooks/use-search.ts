@@ -1,3 +1,5 @@
+"use client";
+
 import { useState, useCallback } from "react";
 import { useMealsByIngredients, useCocktailsByIngredients } from "@/lib/api/queries";
 

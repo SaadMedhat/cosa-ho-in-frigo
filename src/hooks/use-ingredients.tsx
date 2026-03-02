@@ -1,3 +1,5 @@
+"use client";
+
 import { createContext, useContext, useState, useCallback, useMemo } from "react";
 import type { ReactNode } from "react";
 import { normalizeIngredient } from "@/lib/utils/ingredients";

@@ -1,5 +1,4 @@
-export { IngredientInput } from "./IngredientInput";
-export { IngredientChips } from "./IngredientChips";
-export { SwipeableChip } from "./SwipeableChip";
-export { QuickAdd } from "./QuickAdd";
-export { SuggestionsList } from "./SuggestionsList";
+export { IngredientInput } from "./ingredient-input";
+export { IngredientChips } from "./ingredient-chips";
+export { QuickAdd } from "./quick-add";
+export { SuggestionsList } from "./suggestions-list";

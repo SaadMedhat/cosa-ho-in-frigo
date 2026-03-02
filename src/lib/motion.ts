@@ -1,81 +1,52 @@
-import {
-  FadeIn,
-  FadeInDown,
-  FadeInUp,
-  FadeOut,
-  FadeOutDown,
-  FadeOutUp,
-  SlideInRight,
-  SlideOutRight,
-  SlideInLeft,
-  SlideOutLeft,
-  type WithSpringConfig,
-  type WithTimingConfig,
-  Layout,
-  ReduceMotion,
-} from "react-native-reanimated";
+import type { Transition, Variants } from "framer-motion";
 
 export const SPRING_CONFIGS = {
-  gentle: {
-    damping: 20,
-    stiffness: 120,
-    mass: 1,
-  } satisfies WithSpringConfig,
-  snappy: {
-    damping: 15,
-    stiffness: 150,
-    mass: 0.8,
-  } satisfies WithSpringConfig,
-  bouncy: {
-    damping: 12,
-    stiffness: 180,
-    mass: 0.7,
-  } satisfies WithSpringConfig,
-  slow: {
-    damping: 25,
-    stiffness: 90,
-    mass: 1.2,
-  } satisfies WithSpringConfig,
-} as const;
+  gentle: { type: "spring", damping: 20, stiffness: 120, mass: 1 } as const,
+  snappy: { type: "spring", damping: 15, stiffness: 150, mass: 0.8 } as const,
+  bouncy: { type: "spring", damping: 12, stiffness: 180, mass: 0.7 } as const,
+  slow: { type: "spring", damping: 25, stiffness: 90, mass: 1.2 } as const,
+} satisfies Record<string, Transition>;
 
 export const TIMING_CONFIGS = {
-  fast: {
-    duration: 150,
-  } satisfies WithTimingConfig,
-  normal: {
-    duration: 250,
-  } satisfies WithTimingConfig,
-  slow: {
-    duration: 400,
-  } satisfies WithTimingConfig,
-} as const;
+  fast: { duration: 0.15 } as const,
+  normal: { duration: 0.25 } as const,
+  slow: { duration: 0.4 } as const,
+} satisfies Record<string, Transition>;
 
-export const ENTERING = {
-  fadeIn: FadeIn.duration(250).reduceMotion(ReduceMotion.System),
-  fadeInDown: FadeInDown.duration(300).springify().damping(15).stiffness(150).reduceMotion(ReduceMotion.System),
-  fadeInUp: FadeInUp.duration(300).springify().damping(15).stiffness(150).reduceMotion(ReduceMotion.System),
-  slideInRight: SlideInRight.duration(300).springify().damping(15).stiffness(150).reduceMotion(ReduceMotion.System),
-  slideInLeft: SlideInLeft.duration(300).springify().damping(15).stiffness(150).reduceMotion(ReduceMotion.System),
-} as const;
+export const fadeIn: Variants = {
+  initial: { opacity: 0 },
+  animate: { opacity: 1, transition: { duration: 0.25 } },
+  exit: { opacity: 0, transition: { duration: 0.2 } },
+};
 
-export const EXITING = {
-  fadeOut: FadeOut.duration(200).reduceMotion(ReduceMotion.System),
-  fadeOutDown: FadeOutDown.duration(200).reduceMotion(ReduceMotion.System),
-  fadeOutUp: FadeOutUp.duration(200).reduceMotion(ReduceMotion.System),
-  slideOutRight: SlideOutRight.duration(200).reduceMotion(ReduceMotion.System),
-  slideOutLeft: SlideOutLeft.duration(200).reduceMotion(ReduceMotion.System),
-} as const;
+export const fadeInDown: Variants = {
+  initial: { opacity: 0, y: -20 },
+  animate: { opacity: 1, y: 0, transition: SPRING_CONFIGS.snappy },
+  exit: { opacity: 0, y: -10, transition: { duration: 0.2 } },
+};
 
-export const LAYOUT_ANIMATION = Layout.springify()
-  .damping(15)
-  .stiffness(150)
-  .reduceMotion(ReduceMotion.System);
+export const fadeInUp: Variants = {
+  initial: { opacity: 0, y: 20 },
+  animate: { opacity: 1, y: 0, transition: SPRING_CONFIGS.snappy },
+  exit: { opacity: 0, y: 10, transition: { duration: 0.2 } },
+};
+
+export const slideInRight: Variants = {
+  initial: { opacity: 0, x: 40 },
+  animate: { opacity: 1, x: 0, transition: SPRING_CONFIGS.snappy },
+  exit: { opacity: 0, x: 40, transition: { duration: 0.2 } },
+};
+
+export const staggerContainer: Variants = {
+  initial: {},
+  animate: {
+    transition: { staggerChildren: 0.06 },
+  },
+};
+
+export const staggerItem: Variants = {
+  initial: { opacity: 0, y: -15 },
+  animate: { opacity: 1, y: 0, transition: SPRING_CONFIGS.snappy },
+};
 
 export const PRESS_SCALE = 0.96;
-
-export const fadeInDownDelayed = (delayMs: number) =>
-  FadeInDown.delay(delayMs)
-    .duration(300)
-    .springify()
-    .damping(15)
-    .reduceMotion(ReduceMotion.System);

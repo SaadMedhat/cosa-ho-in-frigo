@@ -1,12 +1,8 @@
-import { Pressable, Text } from "react-native";
-import Animated, {
-  useAnimatedStyle,
-  useSharedValue,
-  withSpring,
-} from "react-native-reanimated";
-import * as Haptics from "expo-haptics";
+"use client";
+
+import { motion, AnimatePresence } from "framer-motion";
 import { cn } from "@/lib/utils/cn";
-import { SPRING_CONFIGS, PRESS_SCALE, ENTERING, EXITING } from "@/lib/motion";
+import { fadeIn, PRESS_SCALE } from "@/lib/motion";
 
 type ChipProps = {
   readonly label: string;
@@ -16,31 +12,14 @@ type ChipProps = {
   readonly variant?: "default" | "accent";
 };
 
-const AnimatedPressable = Animated.createAnimatedComponent(Pressable);
-
 export const Chip = ({
   label,
   isSelected = false,
   onPress,
   onRemove,
   variant = "default",
-}: ChipProps): React.JSX.Element => {
-  const scale = useSharedValue(1);
-
-  const animatedStyle = useAnimatedStyle(() => ({
-    transform: [{ scale: scale.value }],
-  }));
-
-  const handlePressIn = (): void => {
-    scale.value = withSpring(PRESS_SCALE, SPRING_CONFIGS.snappy);
-  };
-
-  const handlePressOut = (): void => {
-    scale.value = withSpring(1, SPRING_CONFIGS.snappy);
-  };
-
-  const handlePress = (): void => {
-    Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Light);
+}: ChipProps) => {
+  const handleClick = () => {
     if (onRemove && isSelected) {
       onRemove();
       return;
@@ -49,34 +28,32 @@ export const Chip = ({
   };
 
   return (
-    <AnimatedPressable
-      entering={ENTERING.fadeIn}
-      exiting={EXITING.fadeOut}
-      style={animatedStyle}
-      onPressIn={handlePressIn}
-      onPressOut={handlePressOut}
-      onPress={handlePress}
-      accessibilityRole="button"
-      accessibilityLabel={`${label}${isSelected ? ", selected" : ""}`}
-      accessibilityHint={isSelected ? "Double tap to remove" : "Double tap to add"}
+    <motion.button
+      variants={fadeIn}
+      initial="initial"
+      animate="animate"
+      exit="exit"
+      whileTap={{ scale: PRESS_SCALE }}
+      onClick={handleClick}
+      aria-label={`${label}${isSelected ? ", selected" : ""}`}
       className={cn(
-        "flex-row items-center rounded-chip px-4 py-2",
-        variant === "accent" && !isSelected && "bg-accent/10",
-        variant === "default" && !isSelected && "bg-surface border border-border dark:bg-surface-dark dark:border-border-dark",
-        isSelected && "bg-accent",
+        "inline-flex cursor-pointer items-center rounded-chip px-4 py-2 transition-colors",
+        variant === "accent" && !isSelected && "bg-primary/10 hover:bg-primary/15",
+        variant === "default" &&
+          !isSelected &&
+          "border border-border bg-card hover:bg-secondary",
+        isSelected && "bg-primary hover:bg-primary/90",
       )}
     >
-      <Text
+      <span
         className={cn(
           "text-sm font-medium",
-          isSelected ? "text-white" : "text-foreground dark:text-foreground-on-dark",
+          isSelected ? "text-white" : "text-foreground",
         )}
       >
         {label}
-      </Text>
-      {isSelected && (
-        <Text className="ml-2 text-xs text-white/80">✕</Text>
-      )}
-    </AnimatedPressable>
+      </span>
+      {isSelected && <span className="ml-2 text-xs text-white/80">&times;</span>}
+    </motion.button>
   );
 };
